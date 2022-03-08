@@ -1,8 +1,9 @@
-import axios from './axios';
+import http from './http';
 
 export async function getToDo(){
     try{
-        return axios.get(`/api/getToDo`);
+        console.log("get, getToDo");
+        return http.get(`/api/getToDo`);
     }catch(err){
         return err;
     }

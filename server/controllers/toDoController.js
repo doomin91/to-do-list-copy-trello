@@ -2,11 +2,10 @@
 
 const getToDo = async (req, res) =>{
     try{
-        console.log(req);
-        res.json("connect!!");
+        console.log(1);
+        res.status(200).json("connect!!!!!");
     }catch(err){
-        console.log(err);
-        res.json(err);
+        res.status(404).json(err);
     }
 }
 
