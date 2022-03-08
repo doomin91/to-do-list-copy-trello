@@ -59,18 +59,33 @@
 ### 2. 설계 설명
 
 Vue 파일 구조는 기존 Vue의 Default 형태를 사용하고 일부 필요한 부분만 추가 하였다.
-- src
-    - api                   => Node.js로 요청하기 위한 함수를 모아둔 폴더
-    - lib                   => 공통사용 모듈
-    - assets                => 자산관리
-        - js                => 외부 라이브러리 js 보관
-        - css               => main.css 등 전체 css를 보관
-        - img               => logo등의 파일 보관
-    - components            => (default) Vue 컴퍼넌트 보관
-        - template          => 
-    - views                 => 
-        - Home.js           => 
-    - App.vue                 => 
+가능하면 MVC 패턴을 직관적으로 보이게 하고 싶어 폴더 구조에서 표현하였다.
 
+|1depth|2depth       |3depth     |내용                                        |
+|------|-------------|---------- |--------------------------------------------|
+|src/  |             |           |                                            |
+|      | api/        |           | Node.js로 요청하기 위한 함수를 모아둔 폴더   |
+|      | lib/        |           | 공통사용 모듈                               |
+|      | assets/     |           | 자산관리                                    |
+|      |             | js/       | 외부 라이브러리 js 보관                     |
+|      |             | css/      | main.css 등 전체 css를 보관                 |
+|      |             | img/      | logo등의 파일 보관                          |
+|      | components/ |           | (default) Vue 컴퍼넌트 보관                 |
+|      |             | template/ | Header, Footer 등의 공통사용 파일           |
+|      | views/      |           | Views 폴더                                 |
+|      |             | Home.js   | main Home vue                              |
+|      | App.vue     |           | vue root 파일                              |
 
+Node 파일 구조는 아래와 같다.
+
+|경로|내용|
+|-------|------|
+|- controllers/              | Controller 폴더|
+|- lib/                      | 공용모듈 및 Database 연동 모듈|
+|- models/                   | Model 폴더|
+|- apps.js                   | node root 파일|
+
+------------------------------------
 ### 3. 선택하지 않은 설계 대안
+
+nodemon 추가

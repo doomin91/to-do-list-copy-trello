@@ -11,9 +11,11 @@
       </div>
       <div class="itemBody">  
         <draggable class="dragable" group="people" v-model="element.rows" @start="drag=true" @end="drag=false">
-          <div class="item" v-for="(item, itemIdx) in element.rows" :key="item.id">{{item.name}}
-            <button @click="modifyCard(elementIdx, itemIdx)"><font-awesome-icon icon="fa-regular fa-note-sticky" /></button>
-            <button @click="deleteCard(elementIdx, itemIdx)"><font-awesome-icon icon="fa-regular fa-note-sticky" /></button>
+          <div class="item" v-for="(item, itemIdx) in element.rows" :key="item.id" @mouseover="item.mouseOver=1" @mouseleave="item.mouseOver=0">
+            <div>{{item.name}}</div>
+            <div class="edit">
+              <div @click="modifyCard(elementIdx, itemIdx)" v-if="item.mouseOver==1" ><font-awesome-icon icon="fa-regular fa-edit"/></div>
+            </div>
           </div>
         </draggable>
       </div>
@@ -28,7 +30,7 @@
         </div>
         <div class="regBox" style="padding:0px; mn" v-if="element.mode==1">
           <div>
-            <input v-model="element.addCardTitle" type="text" placeholder="Enter item title for list...">
+            <input v-model="element.addCardTitle" type="text" placeholder="Enter item title for list..." @keyup.enter="addCard(element)">
           </div>
           <div>
             <button class="addBtn" @click="addCard(element)">Add Card</button>
@@ -44,7 +46,7 @@
 
     <div class="regBox" v-if="addMode==1">
       <div>
-        <input v-model="addTitle" type="text" placeholder="Enter list title...">
+        <input v-model="addTitle" type="text" placeholder="Enter list title..."  @keyup.enter="addAnotherList()">
       </div>
       <div>
         <button @click="addAnotherList()" class="addBtn">Add List</button> 
@@ -62,6 +64,7 @@
 <script>
 
 import draggable from 'vuedraggable'
+import * as todoApi from '@/api/todo'
 
 export default {
   components: {
@@ -76,15 +79,17 @@ export default {
           id: 1,
           mode: 0,
           addCardTitle: "",
-          name: 'To-Do-List',
+          name: 'Team Resources',
           rows: [
                   {
                     id:1,
-                    name:"철수"
+                    mouseOver: 0,
+                    name:"Project Overview"
                   },
                   {
                     id:2,
-                    name:"짱구"
+                    mouseOver: 0,
+                    name:"Weekly Updates"
                   }
           ]
         },
@@ -92,19 +97,22 @@ export default {
           id: 2,
           mode: 0,
           addCardTitle: "",
-          name: 'Bucket-List',
+          name: 'To Do',
           rows: [
                   {
                     id:3,
-                    name:"맹구"
+                    mouseOver: 0,
+                    name:"Legal review"
                   },
                   {
                     id:4,
-                    name:"유리"
+                    mouseOver: 0,
+                    name:"Schedule C-suite meeting"
                   },
                   {
                     id:5,
-                    name:"훈이"
+                    mouseOver: 0,
+                    name:"Create brand strategy"
                   }
           ]
         }
@@ -113,6 +121,11 @@ export default {
   },
   methods: {
     addAnotherList(){
+      todoApi.getToDo()
+      .then( (res) => {
+        console.log(res);
+      })
+
       if(this.addTitle == ""){
         alert("값을 입력해주세요.");
         return false;
@@ -130,6 +143,7 @@ export default {
     addCard(element){
       if(element.addCardTitle == ""){
         alert("값을 입력해주세요.")
+        return false;
       }
       let data = {
         id:5,
@@ -147,14 +161,5 @@ export default {
       this.items[listIdx]['rows'].splice(itemIdx, 1);
     }
   },
-  watch: {
-    items: {
-      handler(val, oldVal) {
-        console.log(val)
-        console.log(`watch ${val.name} => ${oldVal.name}`)
-      },
-      deep: true
-    }
-  }
 }
 </script>

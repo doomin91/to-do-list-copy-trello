@@ -19,7 +19,7 @@ header {
     height: 40px;
     border-bottom: 1px solid #6B8390;
     background: #6B8390;
-    background-image: url('../../assets/img/logo.png');
+    background-image: url('@/assets/img/logo.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 80px 20px;
@@ -111,16 +111,10 @@ header ul.menu li input[type="text"] {
     padding-bottom: 5px;
 }
 
-.itemBox .itemHeader .title {
-
-}
-
 .itemBox .itemHeader .toggle {
     padding-right:3px;
     cursor: pointer;
 }
-
-.itemBox .itemBody {}
 
 .itemBox .itemBody .dragable .item {
     margin: 6px 1px;
@@ -130,7 +124,13 @@ header ul.menu li input[type="text"] {
     background: #FFFEFF;
     color: #808080;
     font-size: 0.9rem;
-    padding: 4px;
+    padding: 6px 9px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.itemBox .itemBody .dragable .item:hover{
+    background: #f3f3f3;
 }
 
 .itemBox .itemFooter {
