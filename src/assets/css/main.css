@@ -77,7 +77,7 @@ header ul.menu li input[type="text"] {
     margin: 10px;
     border: 0px;
     border-radius: 3px;
-    background: #D9DADF
+    background: #E8E9EE
 }
 
 .addBox {
@@ -137,11 +137,20 @@ header ul.menu li input[type="text"] {
     cursor: pointer;
     display: inline-flex;
     justify-content: space-between;
-    padding: 5px 15px;
     font-size: 0.8rem;
     font-weight: 570;
     color: #808080;
+}
 
+.itemFooter .btnBox {
+    padding: 5px 15px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.itemFooter .regBox {
+    margin: 0 !important;
 }
 
 .itemBox .itemFooter:hover {
@@ -150,4 +159,36 @@ header ul.menu li input[type="text"] {
 
 .itemBox .itemFooter:active {
     background:#B0B0B0;
+}
+
+.regBox {
+    min-width: 250px;
+    padding: 5px 5px;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 10px;
+    border: 0px;
+    border-radius: 3px;
+    background: #E8E9EE
+}
+
+.regBox input[type="text"]{
+    border: 2px solid #5F81A3;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom:2px;
+}
+
+.regBox .addBtn {
+    cursor: pointer;
+    color:white;
+    padding:7px 12px;
+    background: #52A33E;
+    border: 0px;
+    border-radius: 3px;
+}
+.regBox .cancleBtn {
+    font-weight: 800;
+    font-size: 1.0rem;
+    padding:7px 12px;
 }
