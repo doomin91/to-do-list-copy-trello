@@ -122,7 +122,7 @@ export default {
   methods: {
     addAnotherList(){
       todoApi.getToDo()
-      .then( (res) => {
+      .then(res => {
         console.log(res);
       })
 
