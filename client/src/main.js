@@ -3,7 +3,7 @@ import App from './App.vue'
 
 // Import main.css file
 import './assets/css/main.css';
-// Import fontAwesomeIcon
+// Import fontAwesomeIcon6
 import './assets/js/fontAwesomeIcon.js';
 
 Vue.config.productionTip = false
