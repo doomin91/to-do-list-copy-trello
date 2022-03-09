@@ -1,13 +1,15 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host:'localhost',
-  port: '3306',
-  user:'root',
-  password:'',
-  database:'TODO',
-});
+const pool = mysql.createPool({
+    host:'3.39.30.117',
+    port: '3306',
+    user:'root',
+    password:'Gumdong1!530',
+    database:'TODO',
+    connectionLimit : 10,
+  });
 
-db.connect();
-module.exports = db;
+  const promisePool = pool.promise();
+
+module.exports = promisePool;
 
