@@ -26,3 +26,11 @@ export async function insertCard(data){
         return err;
     }
 }
+
+export async function moveCard(data){
+    try {
+        return http.post(`/api/moveCard`, data);
+    }catch(err){
+        return err;
+    }
+}

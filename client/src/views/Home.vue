@@ -129,9 +129,14 @@ export default {
       element.mode = 0;
     },
     moveCard(evt){
-      console.log(evt.draggedContext);
-      console.log(evt.relatedContext);
-      console.log(evt.parent);
+      let data = {
+        todoSeq: 1,
+        futureIndex: evt.draggedContext.futureIndex
+      }
+      todoApi.moveCard(data)
+      .then(res => {
+        console.log(res);
+      })
     },
     modifyCard(listIdx, itemIdx){
       let item = this.items[listIdx]['rows'][itemIdx];

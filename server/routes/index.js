@@ -12,6 +12,7 @@ const toDoController = require("../controllers/toDoController")
     router.get("/api/updateListById", toDoController.updateListById);
     router.get("/api/deleteListById", toDoController.deleteListById);
     router.get("/api/findCardById",   toDoController.findCardById);
+    router.post("/api/moveCard",      toDoController.moveCard);
     router.post("/api/insertCard",    toDoController.insertCard);
     router.get("/api/updateCardById", toDoController.updateCardById);
     router.get("/api/deleteCardById", toDoController.deleteCardById);

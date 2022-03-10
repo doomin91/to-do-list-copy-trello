@@ -31,6 +31,27 @@ exports.findAll = async function(){
 exports.findListById = function(id, callback) {
     
 }
+
+exports.getPrevNode = async function(todoSeq, futureIndex){
+    let sql = `
+    SELECT * FROM TBL_CARD_LIST 
+    WHERE CL_PARENT_SEQ = 1 AND CL_DEL_YN = 'N'
+    ORDER BY CL_PREV
+    LIMIT ${futureIndex-1}, 1`;
+    let [prev, fields] = await db.query(sql);
+    return prev;
+}
+
+exports.getNextNode = async function(todoSeq, futureIndex){
+    let sql = `
+    SELECT * FROM TBL_CARD_LIST 
+    WHERE CL_PARENT_SEQ = 1 AND CL_DEL_YN = 'N'
+    ORDER BY CL_PREV
+    LIMIT ${futureIndex+1}, 1`;
+    let [next, fields] = await db.query(sql);
+    return next;
+}
+
 exports.insertList = async function(body) {
     let sql = `INSERT INTO TBL_TODO_LIST (TL_TITLE)
         VALUES ('${body.name}')`

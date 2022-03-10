@@ -4,6 +4,7 @@ const ToDo = require("../models/toDoModel")
 
 const findAll = async function (req, res) {
     let result = await ToDo.findAll();
+    console.log(getNode(2));
     res.status(200).json(result);
 }
 
@@ -53,6 +54,24 @@ const deleteCardById = function (req, res) {
     })
 }
 
+const moveCard = async function(req, res){
+    res.json(getNode());
+}
+
+/**
+ * 
+ * @param {*} todoSeq 
+ * @param {*} futureIndex 
+ * @returns 
+ */
+
+const getNode = async function(todoSeq, futureIndex) {
+    let prev = await ToDo.getPrevNode(todoSeq, futureIndex);
+    let next = await ToDo.getNextNode(todoSeq, futureIndex);
+    return [prev, next];
+}
+
+
 module.exports = {
     findAll,
     findListById,
@@ -60,6 +79,8 @@ module.exports = {
     updateListById,
     deleteListById,
     findCardById,
+    moveCard,
+    getNode,
     insertCard,
     updateCardById,
     deleteCardById
