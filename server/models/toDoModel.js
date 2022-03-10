@@ -1,17 +1,21 @@
-const pool = require("../lib/database")
+const db = require("../lib/database")
 
-exports.findAll = async function(callback){
+exports.findAll = async function(){
     let sql = `SELECT * FROM TBL_TODO_LIST WHERE TL_DEL_YN = 'N'`;
-
-    let [todo, fields] = await pool.query(sql);
-    for (let element of todo){
-        console.log(`------------------------------------------------${element.TL_SEQ}`);
-        sql = `SELECT * FROM TBL_CARD_LIST WHERE CL_PARENT_SEQ = ${element.TL_SEQ}`;
-        let [cards, card_fields] = await pool.query(sql);
-        console.log("cards tabel =>");
-        console.log(cards);
+    let result = [];
+    let [todoList, fields] = await db.query(sql);
+    for (let todo of todoList){
+        sql = `SELECT * FROM TBL_CARD_LIST WHERE CL_PARENT_SEQ = ${todo.TL_SEQ}`;
+        let [cardList, cardFields] = await db.query(sql);
+        let data = {
+            TL_SEQ: todo.TL_SEQ,
+            TL_TITLE: todo.TL_TITLE,
+            CARD_LIST: cardList
+        }
+        result.push(data)        
     }
 
+    return result;
 }
 
 exports.findListById = function(id, callback) {

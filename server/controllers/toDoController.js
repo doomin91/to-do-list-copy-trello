@@ -2,26 +2,9 @@
 
 const ToDo = require("../models/toDoModel")
 
-const findAll = function (req, res) {
-    let result = [];
-    let data = {};
-    ToDo.findAll( function (err, callback) {
-        if (err) res.send(err);
-        // for(const element of todoRows){
-        //     data = {
-        //         TL_SEQ: element.TL_SEQ, 
-        //         TL_TITLE: element.TL_TITLE,
-        //         CARD_LIST: []
-        //     }
-
-        //     ToDo.findCardById(element.TL_SEQ, function (err, card){
-        //         if (err) res.send(err);
-        //         data.CARDS.push(card);
-        //     })
-        //     result.push(data);
-        // }
-        res.json(callback);
-    });
+const findAll = async function (req, res) {
+    let result = await ToDo.findAll();
+    res.status(200).json(result);
 }
 
 const findListById = function (req, res) {
