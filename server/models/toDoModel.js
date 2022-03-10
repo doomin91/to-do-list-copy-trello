@@ -6,13 +6,23 @@ exports.findAll = async function(){
     let [todoList, fields] = await db.query(sql);
     for (let todo of todoList){
         sql = `SELECT * FROM TBL_CARD_LIST WHERE CL_PARENT_SEQ = ${todo.TL_SEQ}`;
-        let [cardList, cardFields] = await db.query(sql);
-        let data = {
-            TL_SEQ: todo.TL_SEQ,
-            TL_TITLE: todo.TL_TITLE,
-            CARD_LIST: cardList
+        let listData = {
+            id: todo.TL_SEQ,
+            mode: 0,            // 0: 기본 값, 1: 쓰기 모드
+            addCardTitle: "",   // 입력된 데이터를 받을 변수 선언
+            name: todo.TL_TITLE,
+            rows: []
         }
-        result.push(data)        
+        let [cardList, cardFields] = await db.query(sql);
+        for (let card of cardList){
+            let cardData = {
+                id: card.CL_SEQ,
+                mouseOver: 0,   // 마우스오버 이벤트 제어변수
+                name: card.CL_TITLE,
+            }
+            listData.rows.push(cardData);
+        }   
+        result.push(listData)        
     }
 
     return result;
@@ -21,8 +31,13 @@ exports.findAll = async function(){
 exports.findListById = function(id, callback) {
     
 }
-exports.insertList = function(id, callback) {
-    
+exports.insertList = async function(body) {
+    let sql = `INSERT INTO TBL_TODO_LIST (TL_TITLE)
+        VALUES ('${body.name}')`
+        
+    let result = await db.execute(sql);
+
+    return result;
 }
 exports.updateListById = function(id, callback) {
     
@@ -44,8 +59,12 @@ exports.findCardById = async function(id, callback) {
         }
     });
 }
-exports.insertCard = function(id, callback) {
-    
+exports.insertCard = async function(body) {
+    let sql = `INSERT INTO TBL_CARD_LIST (CL_PARENT_SEQ, CL_TITLE)
+    VALUES (${body.id}, '${body.name}')`;
+        
+    let result = await db.execute(sql);
+    return result;
 }
 exports.updateCardById = function(id, callback) {
     

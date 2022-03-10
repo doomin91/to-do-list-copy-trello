@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="itemBody">  
-        <draggable class="dragable" group="people" v-model="element.rows" @start="drag=true" @end="drag=false">
+        <draggable class="dragable" group="people" v-model="element.rows" @start="drag=true" @end="drag=false" :move="moveCard">
           <div class="item" v-for="(item, itemIdx) in element.rows" :key="item.id" @mouseover="item.mouseOver=1" @mouseleave="item.mouseOver=0">
             <div>{{item.name}}</div>
             <div class="edit">
@@ -74,58 +74,18 @@ export default {
     return {
       addMode: 0,
       addTitle: "",
-      items: [
-        {
-          id: 1,
-          mode: 0,
-          addCardTitle: "",
-          name: 'Team Resources',
-          rows: [
-                  {
-                    id:1,
-                    mouseOver: 0,
-                    name:"Project Overview"
-                  },
-                  {
-                    id:2,
-                    mouseOver: 0,
-                    name:"Weekly Updates"
-                  }
-          ]
-        },
-        {
-          id: 2,
-          mode: 0,
-          addCardTitle: "",
-          name: 'To Do',
-          rows: [
-                  {
-                    id:3,
-                    mouseOver: 0,
-                    name:"Legal review"
-                  },
-                  {
-                    id:4,
-                    mouseOver: 0,
-                    name:"Schedule C-suite meeting"
-                  },
-                  {
-                    id:5,
-                    mouseOver: 0,
-                    name:"Create brand strategy"
-                  }
-          ]
-        }
-      ]
+      items: []
     } 
   },
   methods: {
-    addAnotherList(){
-      todoApi.getToDo()
+    getDataLoad(){
+      todoApi.getList()
       .then(res => {
         console.log(res);
+        this.items = res.data;
       })
-
+    },
+    addAnotherList(){
       if(this.addTitle == ""){
         alert("값을 입력해주세요.");
         return false;
@@ -137,7 +97,16 @@ export default {
           mode: 0,
           addCardTitle: "",
         }
-      this.items.push(data)
+      todoApi.insertList(data)
+      .then(res => {
+        console.log(res);
+        if(res.status == 200){
+          this.getDataLoad()
+      // this.items.push(data)
+        } else {
+          alert("error!!");
+        }
+      })
       this.addTitle = ""
     },
     addCard(element){
@@ -146,12 +115,23 @@ export default {
         return false;
       }
       let data = {
-        id:5,
+        id:element.id, // parentSeq
         name:element.addCardTitle
       }
-      element.rows.push(data)
+      todoApi.insertCard(data)
+      .then(res => {
+        console.log(res);
+        this.getDataLoad()
+      })
+
+      // element.rows.push(data)
       element.addCardTitle = ""
       element.mode = 0;
+    },
+    moveCard(evt){
+      console.log(evt.draggedContext);
+      console.log(evt.relatedContext);
+      console.log(evt.parent);
     },
     modifyCard(listIdx, itemIdx){
       let item = this.items[listIdx]['rows'][itemIdx];
@@ -161,5 +141,8 @@ export default {
       this.items[listIdx]['rows'].splice(itemIdx, 1);
     }
   },
+  created() {
+    this.getDataLoad()
+  }
 }
 </script>
