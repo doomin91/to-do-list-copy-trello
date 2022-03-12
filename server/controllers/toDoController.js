@@ -4,7 +4,6 @@ const ToDo = require("../models/toDoModel")
 
 const findAll = async function (req, res) {
     let result = await ToDo.findAll();
-    console.log(getNode(2));
     res.status(200).json(result);
 }
 
@@ -37,16 +36,19 @@ const findCardById = function (req, res) {
         res.json(callback);
     })
 }
+
 const insertCard = async function (req, res) {
     let result = await ToDo.insertCard(req.body)
     res.json(result);
 }
+
 const updateCardById = function (req, res) {
     ToDo.updateCardById( req.param.id, function (err, callback) {
         if (err) res.json(err);
         res.json(callback);
     })
 }
+
 const deleteCardById = function (req, res) {
     ToDo.deleteCardById( req.param.id, function (err, callback) {
         if (err) res.json(err);
@@ -54,8 +56,23 @@ const deleteCardById = function (req, res) {
     })
 }
 
+/**
+ * 
+ * @param {card} req * 이벤트 발생 Card Seq
+ * @param {todoSeq} req  * 이동하려는 ToDoList Seq
+ * @param {futureIndex} req  * 이동되는 Index
+ */
 const moveCard = async function(req, res){
-    res.json(getNode());
+    let nodes, result;
+    const cardSeq = req.body.cardSeq;
+    const cardInfo = await ToDo.findCardById(cardSeq);
+    const oldParentSeq = cardInfo[0].CL_PARENT_SEQ;
+    const newParentSeq = req.body.todoSeq;
+    const futureIndex = req.body.futureIndex;
+    // 현재 위치에서 링크 끊기 뒤 Row의 Next와 앞 Row의 Next 이어주기
+    result = await ToDo.unlinkNode(cardSeq, oldParentSeq);
+    result = await ToDo.linkNode(cardSeq, newParentSeq, futureIndex);
+    res.status(200).json(nodes);
 }
 
 /**
@@ -65,13 +82,6 @@ const moveCard = async function(req, res){
  * @returns 
  */
 
-const getNode = async function(todoSeq, futureIndex) {
-    let prev = await ToDo.getPrevNode(todoSeq, futureIndex);
-    let next = await ToDo.getNextNode(todoSeq, futureIndex);
-    return [prev, next];
-}
-
-
 module.exports = {
     findAll,
     findListById,
@@ -80,7 +90,6 @@ module.exports = {
     deleteListById,
     findCardById,
     moveCard,
-    getNode,
     insertCard,
     updateCardById,
     deleteCardById

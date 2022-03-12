@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="itemBody">  
-        <draggable class="dragable" group="people" v-model="element.rows" @start="drag=true" @end="drag=false" :move="moveCard">
+        <draggable class="dragable" group="people" v-model="element.rows" :move="moveCard" @unchoose="saveMoved" :id="element.id" :name="element.name">
           <div class="item" v-for="(item, itemIdx) in element.rows" :key="item.id" @mouseover="item.mouseOver=1" @mouseleave="item.mouseOver=0">
             <div>{{item.name}}</div>
             <div class="edit">
@@ -74,7 +74,12 @@ export default {
     return {
       addMode: 0,
       addTitle: "",
-      items: []
+      items: [],
+      savePoint: {
+        cardId:0,
+        listId:0,
+        futureIndex:0,
+      }
     } 
   },
   methods: {
@@ -129,14 +134,21 @@ export default {
       element.mode = 0;
     },
     moveCard(evt){
-      let data = {
-        todoSeq: 1,
+      this.savePoint = {
+        cardSeq: evt.draggedContext.element.id,
+        todoSeq: evt.relatedContext.component.$attrs.id,
         futureIndex: evt.draggedContext.futureIndex
       }
-      todoApi.moveCard(data)
-      .then(res => {
-        console.log(res);
-      })
+      console.log(this.savePoint);
+    },
+    saveMoved(){
+      if(this.savePoint.cardSeq != undefined){
+        todoApi.moveCard(this.savePoint)
+        .then(res => {
+          console.log(res);
+        })
+        this.savePoint.cardSeq = undefined;
+      }
     },
     modifyCard(listIdx, itemIdx){
       let item = this.items[listIdx]['rows'][itemIdx];
