@@ -1,3 +1,10 @@
+# 내부 서버에서 실행 할 경우!
+> 1. client/src/api/http.js 의 baseURL을 Api서버가 실행된 PC의 IP(ex:192.168.0.1)로 변경해야 합니다.
+> 2. database는 외부 ec2 서버에 설치되어있습니다.
+
+--------------------
+
+
 # To Do List Project
 
 --------------------
